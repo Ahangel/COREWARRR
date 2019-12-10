@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   xor.c                                              :+:      :+:    :+:   */
+/*   ldi.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crath <crath@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dstracke <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/07 17:25:45 by crath             #+#    #+#             */
-/*   Updated: 2019/09/25 20:19:46 by crath            ###   ########.fr       */
+/*   Created: 2019/11/15 21:01:46 by dstracke          #+#    #+#             */
+/*   Updated: 2019/12/16 02:34:38 by dstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-int		xor(t_list *carry, t_vm *vm)
+int		ldi(t_list *carry, t_vm *vm)
 {
 	int j;
 	int n;
 
 	j = carry->coding >> 2;
-	n = (int)get_rdi_val(carry, j >> 2, 4, vm) ^
-		(int)get_rdi_val(carry, j & 3, 4, vm);
+	j = ((int)get_rdi_val(carry, j >> 2, 2, vm) +
+		(int)get_rdi_val(carry, j & 3, 2, vm)) % IDX_MOD;
+	n = carry->op;
+	iterate(&n, j);
+	n = get_uint(vm->map, n);
 	carry->registry[vm->map[carry->pc].val - 1] = n;
-	carry->carry = carry->registry[vm->map[carry->pc].val - 1] == 0 ? 1 : 0;
-	carry->pc = iterate(&carry->pc, 1);
+	iterate(&carry->pc, 1);
 	return (0);
 }

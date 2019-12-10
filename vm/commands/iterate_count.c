@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork.c                                             :+:      :+:    :+:   */
+/*   iterate.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crath <crath@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dstracke <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/07 17:21:14 by crath             #+#    #+#             */
-/*   Updated: 2019/09/25 20:18:04 by crath            ###   ########.fr       */
+/*   Created: 2019/11/15 21:01:46 by dstracke          #+#    #+#             */
+/*   Updated: 2019/12/16 02:34:38 by dstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-int		fork_op(t_list *carry, t_vm *vm)
+int		iterate(int *pc, int n)
 {
-	fork_carry(carry, vm, get_short(vm->map, carry->pc) % IDX_MOD);
-	iterate(&carry->pc, 2);
-	vm->processes++;
-	choose_sound(vm, 3);
-	return (0);
+	if (*pc + n < 0)
+	{
+		*pc += n % MEM_SIZE;
+		if (*pc < 0)
+			*pc += MEM_SIZE;
+		return (*pc);
+	}
+	*pc = (*pc + n) % MEM_SIZE;
+	return (*pc);
 }

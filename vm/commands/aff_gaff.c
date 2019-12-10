@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterate.c                                          :+:      :+:    :+:   */
+/*   aff.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crath <crath@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dstracke <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/07 17:21:43 by crath             #+#    #+#             */
-/*   Updated: 2019/09/25 20:19:54 by crath            ###   ########.fr       */
+/*   Created: 2019/11/15 21:01:46 by dstracke          #+#    #+#             */
+/*   Updated: 2019/12/16 02:34:38 by dstracke         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 
-int		iterate(int *pc, int n)
+int		aff(t_list *carry, t_vm *vm)
 {
-	if (*pc + n < 0)
+	int n;
+
+	if (vm->a_flag == 1)
 	{
-		*pc += n % MEM_SIZE;
-		if (*pc < 0)
-			*pc += MEM_SIZE;
-		return (*pc);
+		n = carry->registry[vm->map[carry->pc].val - 1];
+		write(1, "Aff: ", 5);
+		write(1, &n, 1);
+		write(1, "\n", 1);
 	}
-	*pc = (*pc + n) % MEM_SIZE;
-	return (*pc);
+	iterate(&carry->pc, 1);
+	return (0);
 }

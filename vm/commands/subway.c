@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_argument.c                                :+:      :+:    :+:   */
+/*   sub.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dstracke <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,15 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "corewar.h"
 
-void		validate_argument(char *f, int i)
+int		sub(t_list *carry, t_vm *vm)
 {
-	while (f[i] && f[i] != '\n')
-	{
-		if (f[i] == COMMENT_CHAR || f[i] == SEPAR)
-			break ;
-		if (f[i++] == SEPARATOR_CHAR)
-			close_lex(f, i);
-	}
+	int r1;
+	int r2;
+
+	r1 = carry->pc;
+	r2 = iterate(&carry->pc, 1);
+	iterate(&carry->pc, 1);
+	carry->registry[vm->map[carry->pc].val - 1] =
+	carry->registry[vm->map[r1].val - 1] - carry->registry[vm->map[r2].val - 1];
+	carry->carry = carry->registry[vm->map[carry->pc].val - 1] == 0 ? 1 : 0;
+	carry->pc = iterate(&carry->pc, 1);
+	return (0);
 }
